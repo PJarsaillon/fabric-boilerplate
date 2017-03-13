@@ -23,4 +23,11 @@ export class ThingService {
       .get(this.actionUrl + '/' + user.userID, {headers: this.headers})
       .map(res => res.json());
   }
+
+  public getThingInfo(thingId: number) {
+    let user: any = JSON.parse(localStorage.getItem('currentUser')).user;
+    return this._http
+      .get(this.actionUrl + '/' + user.userID + '/' + thingId, {headers: this.headers})
+      .map(res => res.json());
+  }
 }

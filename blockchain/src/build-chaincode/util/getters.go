@@ -16,6 +16,32 @@ func GetCurrentBlockchainUser(stub shim.ChaincodeStubInterface) (entities.User, 
 	return GetUser(stub, string(userIDAsBytes))
 }
 
+func GetThingInfo(stub shim.ChaincodeStubInterface, userID string, thingID string) (entities.Thing, error) {
+	thingsIndex, err := GetIndex(stub, ThingsIndexName)
+	if err != nil {
+		return entities.Thing{}, errors.New("Unable to retrieve thingsIndex, reason: " + err.Error())
+	}
+
+	for _, id := range thingsIndex {
+		thingAsBytes, err := stub.GetState(id)
+		if err != nil {
+			return entities.Thing{}, errors.New("Could not retrieve thing for ID " + id + " reason: " + err.Error())
+		}
+
+		var thing entities.Thing
+		err = json.Unmarshal(thingAsBytes, &thing)
+		if err != nil {
+			return entities.Thing{}, errors.New("Error while unmarshalling thingAsBytes, reason: " + err.Error())
+		}
+
+		if thing.UserID == userID && thing.ThingID == thingID {
+			return thing, nil
+		}
+	}
+
+	return entities.Thing{}, nil
+}
+
 func GetThingsByUserID(stub shim.ChaincodeStubInterface, userID string) ([]string, error) {
 	thingsIndex, err := GetIndex(stub, ThingsIndexName)
 	if err != nil {

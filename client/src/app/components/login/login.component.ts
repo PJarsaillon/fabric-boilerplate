@@ -10,8 +10,8 @@ import {AuthenticationService} from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   public title = 'app works';
-  public username = '';
-  public password = '';
+  public username = 'john'; // TODO Remove username
+  public password = 'passw0rd'; // TODO Remove password
 
   public constructor(private _router: Router,
                      private _authenticationService: AuthenticationService) {

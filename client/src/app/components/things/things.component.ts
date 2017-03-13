@@ -16,6 +16,11 @@ export class ThingsComponent implements OnInit {
     this._thingsService.getThingsByUser().subscribe(things => {
       console.log(things);
       this.things = things;
+      this.things.forEach((thingID: number) => {
+        this._thingsService.getThingInfo(thingID).subscribe(thing => {
+          console.log(thing);
+        });
+      });
     });
   }
 }

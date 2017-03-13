@@ -94,6 +94,13 @@ func (t *Chaincode) GetQueryResult(stub shim.ChaincodeStubInterface, functionNam
 		}
 
 		return thingsByUserID, nil
+	} else if functionName == "getThingInfo" {
+		thing, err := util.GetThingInfo(stub, args[0], args[1])
+		if err != nil {
+			return nil, errors.New("could not retrieve thing by user id " + args[0] + " and thing id " + args[1] + ", reason: " + err.Error())
+		}
+
+		return thing, nil
 	}
 
 	return nil, errors.New("Received unknown query function name")

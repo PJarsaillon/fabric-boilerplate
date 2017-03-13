@@ -32,6 +32,7 @@ class App {
     });
 
     // Log requests
+    //noinspection TypeScriptValidateTypes
     app.use(morgan('dev', <morgan.Options> {
       stream: {
         skip:  (request: Request, response: Response) => response.statusCode < 400,

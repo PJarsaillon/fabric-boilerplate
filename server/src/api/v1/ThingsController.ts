@@ -11,6 +11,13 @@ import {Service} from 'typedi';
 export class ThingsController {
   public constructor(private blockchainClient: BlockchainClient) { }
 
+  @Get('/:user_id/:thing_id')
+  public getThingInfo(@Param('user_id') userID: string, @Param('thing_id') thingID: string, @Req() request: any): any {
+    let enrollmentID = new JSONWebToken(request).getUserID();
+
+    return this.blockchainClient.query('getThingInfo', [userID, thingID], enrollmentID);
+  }
+
   @Get('/:id')
   public getThingsByUserID(@Param('id') userID: string, @Req() request: any): any {
     let enrollmentID = new JSONWebToken(request).getUserID();
